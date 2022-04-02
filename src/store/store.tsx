@@ -1,17 +1,17 @@
 import {AnyAction, combineReducers, configureStore, Reducer} from '@reduxjs/toolkit'
 import {setupListeners} from '@reduxjs/toolkit/dist/query'
 import {authenticationApi} from '../services/AuthenticationService'
-// import {todoApi} from '../services/TodoService'
 import {persistReducer} from 'redux-persist'
 import authenticationSlice from './authentication/AuthenticationSlice'
 import storage from 'redux-persist/lib/storage'
+import { clientApi } from '../services/ClientService'
 
 // Combines all reducers. This will be debuggable
 // in Redux app Store.
 const reducers = combineReducers({
   authentication: authenticationSlice,
   authenticationApi: authenticationApi.reducer,
-  // todoApi: todoApi.reducer,
+  clientApi: clientApi.reducer,
 })
 
 const persistConfig = {
@@ -37,7 +37,7 @@ export const store = configureStore({
   // Adding the api middleware enables caching, invalidation, polling,
   // and other useful features of `rtk-query`.
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware({serializableCheck: false}).concat(authenticationApi.middleware)
+    getDefaultMiddleware({serializableCheck: false}).concat(clientApi.middleware)
 })
 
 setupListeners(store.dispatch)

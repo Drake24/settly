@@ -8,9 +8,8 @@ import formatError from "../../../utils/FormatResponseErrorUtil";
 
 const Login = () => {
   const dispatch = useAppDispatch();
-  /* eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars */
   const [loading, setLoading] = useState(false);
-  const [authenticate, { isLoading, isError }] = useAuthenticateMutation();
+  const [authenticate, { isLoading }] = useAuthenticateMutation();
   const [credentials, setCredentials] = useState({
     email: "",
     password: "",
@@ -24,10 +23,10 @@ const Login = () => {
     await authenticate(credentials)
       .unwrap()
       .then((user: Admin) => {
-          console.log(user);
         dispatch(saveUserCredentials(user));
       })
       .catch((error: ErrorData) => {
+        console.log(error);
         setResponseError(formatError(error));
       });
   };

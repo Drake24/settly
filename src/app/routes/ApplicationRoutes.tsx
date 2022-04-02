@@ -1,15 +1,18 @@
+import { useSelector } from "react-redux";
 import { Route, Routes } from "react-router-dom";
-import Login from "../pages/auth/Login";
-import Register from "../pages/auth/Register";
-import Dashboard from '../pages/dashboard/Dashboard';
+import { selectIsAuthorized } from "../../store/authentication/AuthenticationSlice";
+import PrivateRoutes from "./PrivateRoutes";
+import PublicRoutes from "./PublicRoutes";
 
 const ApplicationRoutes = () => {
+  const isAuthorize = useSelector(selectIsAuthorized);
   return (
-    <Routes>
-      <Route path="/register" element={<Register />} />
-      <Route path="/login" element={<Login />} />
-      <Route path="/dashboard" element={<Dashboard />} />
-    </Routes>
+    <>
+      {!isAuthorize ? <PublicRoutes /> : <PrivateRoutes />}
+      <Routes>
+        <Route path="/logout"/>
+      </Routes>
+    </>
   );
 };
 

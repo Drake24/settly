@@ -1,5 +1,5 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit'
-import User from '../../lib/models/AdminModel'
+import Admin from '../../lib/models/AdminModel'
 import {RootState} from '../store'
 
 // const initialUserState: User = {
@@ -10,7 +10,7 @@ import {RootState} from '../store'
 export const authenticationSlice = createSlice({
   name: 'authentication',
   initialState: {
-    user: {} as User,
+    user: {} as Admin,
     isAuthorized: false,
   },
   reducers: {
@@ -18,15 +18,11 @@ export const authenticationSlice = createSlice({
     // doesn't actually mutate the state because it uses the immer library,
     // which detects changes to a "draft state" and produces a brand new
     // immutable state based off those changes
-
     logoutUser: (state: RootState) => {
-      console.log('user has been logged out')
-      state.user = {} as User
+      state.user = {} as Admin
       state.isAuthorized = false
-      //resettableReducer(state, action)
     },
-    saveUserCredentials(state: RootState, {payload}: PayloadAction<User>) {
-      console.log('action', payload)
+    saveUserCredentials(state: RootState, {payload}: PayloadAction<Admin>) {
       state.user = payload
       state.isAuthorized = true
     },
@@ -35,27 +31,12 @@ export const authenticationSlice = createSlice({
 
 export const {saveUserCredentials, logoutUser} = authenticationSlice.actions
 
-// The function below is called a thunk and allows us to perform async logic. It
-// can be dispatched like a regular action: `dispatch(incrementAsync(10))`. This
-// will call the thunk with the `dispatch` function as the first argument. Async
-// code can then be executed and other actions can be dispatched
-// export const incrementAsync = (amount: any) => (dispatch: any) => {
-//   setTimeout(() => {
-//     dispatch(incrementByAmount(amount));
-//   }, 1000);
-// };
 
-// The function below is called a selector and allows us to select a value from
-// the state. Selectors can also be defined inline where they're used instead of
-// in the slice file. For example: `useSelector((state) => state.counter.value)`
-
-// !! Use RootState when accessing state as Typescript is very strict.
-export const selectUser = (state: RootState): User => state.authentication.user
+export const selectUser = (state: RootState): Admin => state.authentication.user
 
 export const selectIsAuthorized = (state: RootState): boolean => state.authentication.isAuthorized
 
 export const selectAccessToken = (state: RootState): string => state.authentication.user.accessToken
 
-export const selectUserTodos = (state: RootState): any => state.todoApi
 
 export default authenticationSlice.reducer

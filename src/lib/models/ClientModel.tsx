@@ -3,5 +3,6 @@ export default interface ClientModel {
   firstName: string;
   lastName: string;
   email: string;
-  profilePhoto: string;
+  profilePhoto?: string;
+  file?: string;
 }

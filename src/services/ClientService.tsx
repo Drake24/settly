@@ -1,67 +1,68 @@
-import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react'
-import Client from '../lib/models/ClientModel'
-import {RootState} from '../store/store'
+import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import Client from "../lib/models/ClientModel";
+import { RootState } from "../store/store";
 
 export const clientApi = createApi({
-  reducerPath: 'clientApi',
+  reducerPath: "clientApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: process.env.REACT_APP_LOCAL_HOST_BASE_URL,
-    prepareHeaders: (headers, {getState}) => {
-      const accessToken = (getState() as RootState).authentication.user.apiToken
-      headers.set('Authorization', `Bearer ${accessToken}`)
-      return headers
+    baseUrl: process.env.REACT_APP_LOCAL_HOST_API_URL,
+    prepareHeaders: (headers, { getState }) => {
+      const accessToken = (getState() as RootState).authentication.user
+        .apiToken;
+      headers.set("Authorization", `Bearer ${accessToken}`);
+      return headers;
     },
   }),
-  tagTypes: ['Clients'],
+  tagTypes: ["Clients"],
   endpoints: (builder) => ({
     getClients: builder.query<Client[], void>({
-      query: () => 'clients',
+      query: () => "clients",
       transformResponse: (response: any) => response.data,
-      providesTags: ['Clients'],
+      providesTags: ["Clients"],
     }),
 
     // Use void if no return or query parameter to be pass
     getClient: builder.query<Client, number>({
       query: (id) => `clients/${id}`,
-      providesTags: ['Clients'],
+      providesTags: ["Clients"],
     }),
 
     addClient: builder.mutation<Client, Client>({
       query(client: Client) {
+        const { file } = client;
+        const formData = new FormData();
+        formData.append("file", file as string);
         return {
           url: `clients`,
-          method: 'POST',
+          method: "POST",
           body: client,
-        }
+        };
       },
       // Invalidates the Clients tag
-      invalidatesTags: ['Clients'],
+      invalidatesTags: ["Clients"],
     }),
 
     deleteClient: builder.mutation<Client, Client>({
       query(client: Client) {
-        const {id} = client
+        const { id } = client;
         return {
           url: `clients/${id}`,
-          method: 'DELETE',
-        }
+          method: "DELETE",
+        };
       },
-      invalidatesTags: ['Clients'],
+      invalidatesTags: ["Clients"],
     }),
 
     updateClient: builder.mutation<Client, Client>({
       query(client: Client) {
-        const {id, firstName } = client
+        const { id } = client;
         return {
           url: `clients/${id}`,
-          method: 'PATCH',
-          body: {
-            // Todo
-            firstName
-          },
-        }
+          method: "PATCH",
+          body: client,
+        };
       },
-      invalidatesTags: ['Clients'],
+      invalidatesTags: ["Clients"],
     }),
 
     // Add more here
@@ -73,9 +74,13 @@ export const clientApi = createApi({
   //       return endpoint('GET /user');
   //     },
   // }),
-})
+});
 
 // Export hooks for usage in functional components, which are
 // auto-generated based on the defined endpoints
-export const {useGetClientsQuery, useAddClientMutation, useDeleteClientMutation, useUpdateClientMutation} =
-  clientApi
+export const {
+  useGetClientsQuery,
+  useAddClientMutation,
+  useDeleteClientMutation,
+  useUpdateClientMutation,
+} = clientApi;

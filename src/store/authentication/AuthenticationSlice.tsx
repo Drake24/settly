@@ -31,7 +31,6 @@ export const authenticationSlice = createSlice({
 
 export const {saveUserCredentials, logoutUser} = authenticationSlice.actions
 
-
 export const selectUser = (state: RootState): Admin => state.authentication.user
 
 export const selectIsAuthorized = (state: RootState): boolean => state.authentication.isAuthorized

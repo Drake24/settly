@@ -5,6 +5,7 @@ import { useAppDispatch } from "../../../store/hooks";
 import Admin from "../../../lib/models/AdminModel";
 import ErrorData from "../../../lib/enums/ErrorData";
 import formatError from "../../../utils/FormatResponseErrorUtil";
+import { Link } from "react-router-dom";
 
 const Login = () => {
   const dispatch = useAppDispatch();
@@ -80,7 +81,10 @@ const Login = () => {
                   Login
                 </button>
               </div>
-              <span>No account yet? Create one here</span>
+              <span>
+                No account yet? &nbsp;
+                <Link className="link-create" to="/auth/register">Create one here.</Link>
+              </span>
             </div>
           </div>
         </div>

@@ -4,7 +4,9 @@ import Admin from "../../../lib/models/AdminModel";
 import ErrorData from "../../../lib/enums/ErrorData";
 import formatError from "../../../utils/FormatResponseErrorUtil";
 import ReCAPTCHA from "react-google-recaptcha";
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
+import React from "react";
+import formatErrorBag from "../../../utils/FormatErrorBagUtil";
 
 interface formRegister {
   firstName: string;
@@ -31,6 +33,8 @@ const Register = () => {
   const [responseError, setResponseError] = useState<ErrorData | null>();
   const [success, setSuccess] = useState<boolean>();
   const [admin, setAdmin] = useState<formRegister>(initialState);
+  const [errors, setError] = useState<Array<string> | null>([]);
+  const recaptchaRef: any = React.useRef();
 
   const onCreate = async () => {
     await addAdmin(admin)
@@ -38,11 +42,14 @@ const Register = () => {
       .then((user: Admin) => {
         setSuccess(true);
         setResponseError(null);
+        setError(null);
         setAdmin({ ...initialState });
+        recaptchaRef.current?.reset();
       })
       .catch((error: ErrorData) => {
         setSuccess(false);
         setResponseError(formatError(error));
+        setError(formatErrorBag(error));
       });
   };
 
@@ -60,17 +67,6 @@ const Register = () => {
     });
   };
 
-  const errors = () => {
-    const test: any = [];
-    Object.entries(responseError?.errors?.data).forEach(([key, value]) =>
-      test.push(value)
-    );
-
-    test.forEach((error: Array<string>) => {
-      return error[0];
-    });
-  };
-
   return (
     <div className="container">
       <div className="row justify-content-center align-items-center py-5">
@@ -83,6 +79,10 @@ const Register = () => {
                 {responseError?.errors
                   ? responseError?.errors?.message
                   : responseError?.message}
+
+                {errors?.map((error: string, index: number) => (
+                  <li key={index}>{error}</li>
+                ))}
               </div>
               <div className="p-3">
                 <div className="form-floating mb-3">
@@ -153,6 +153,7 @@ const Register = () => {
                 </div>
                 <div className="my-4">
                   <ReCAPTCHA
+                    ref={recaptchaRef}
                     sitekey="6LdWxD4fAAAAAOM-c09eviOwrPZfGyU7lYYUn7Ld"
                     onChange={onChangeRecaptcha}
                   />

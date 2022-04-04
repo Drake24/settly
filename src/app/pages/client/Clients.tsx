@@ -10,6 +10,7 @@ import Client from "../../../lib/models/ClientModel";
 import Navbar from "../Navbar";
 import ErrorData from "../../../lib/enums/ErrorData";
 import formatError from "../../../utils/FormatResponseErrorUtil";
+import formatErrorBag from "../../../utils/FormatErrorBagUtil";
 
 interface formCreate {
   firstName: string;
@@ -31,6 +32,8 @@ const Clients = () => {
   const [responseError, setResponseError] = useState<ErrorData | null>();
   const [responseErrorEdit, setResponseErrorEdit] =
     useState<ErrorData | null>();
+  const [errors, setError] = useState<Array<string> | null>([]);
+
   const [addClient] = useAddClientMutation();
   const [deleteClient] = useDeleteClientMutation();
   const [updateClient] = useUpdateClientMutation();
@@ -39,23 +42,23 @@ const Clients = () => {
   const [client, setClient] = useState<formCreate>(initialState);
   const [editClient, setEditClient] = useState<Client>(initialState);
 
-  const onHandleChange = (e: React.FormEvent<HTMLInputElement>) => {
+  const onHandleChange = (event: React.FormEvent<HTMLInputElement>) => {
     setClient({
       ...client,
-      [e.currentTarget.name]:
-        e.currentTarget.name !== "file"
-          ? e.currentTarget.value
-          : e.currentTarget.files?.[0],
+      [event.currentTarget.name]:
+        event.currentTarget.name !== "file"
+          ? event.currentTarget.value
+          : event.currentTarget.files?.[0],
     });
   };
 
-  const onHandleEditClient = (e: React.FormEvent<HTMLInputElement>) => {
+  const onHandleEditClient = (event: React.FormEvent<HTMLInputElement>) => {
     setEditClient({
       ...editClient,
-      [e.currentTarget.name]:
-        e.currentTarget.name !== "file"
-          ? e.currentTarget.value
-          : e.currentTarget.files?.[0],
+      [event.currentTarget.name]:
+        event.currentTarget.name !== "file"
+          ? event.currentTarget.value
+          : event.currentTarget.files?.[0],
     });
   };
 
@@ -65,9 +68,11 @@ const Clients = () => {
       .then((client: Client) => {
         setResponseError(null);
         setClient({ ...initialState });
+        setError(null);
       })
       .catch((error: ErrorData) => {
         setResponseError(formatError(error));
+        setError(formatErrorBag(error));
       });
   };
 
@@ -104,6 +109,10 @@ const Clients = () => {
                 {responseError?.errors
                   ? responseError?.errors?.message
                   : responseError?.message}
+
+                {errors?.map((error: string, index: number) => (
+                  <li key={index}>{error}</li>
+                ))}
                 <div className="form-floating mb-3">
                   <input
                     name="firstName"

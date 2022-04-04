@@ -10,7 +10,7 @@ import {
 export default function formatError<
   T extends FetchBaseQueryError | SerializedError | ErrorData | undefined
 >(errorData: T): ErrorData | null {
-  if (errorData == null) {
+  if (errorData === null) {
     return null
   }
 

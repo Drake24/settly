@@ -17,13 +17,13 @@ To start with the application run:
 ## Notes
 | File/Folder |  Description|
 |--|--|
-| app/pages| (sub parent folder) contains the pages of the application and partial templates|
-| app/pages/auth | contains the authentication pages and logic of the application |
-| app/routes|  the routes of the application separated for public and private|
+| app/pages| (sub parent folder) contains the pages of the application and partial templates.|
+| app/pages/auth | contains the authentication pages of the application. |
+| app/routes|  the routes of the application separated for authorize and unauthorize users.|
 | lib | (parent folder) contains the common files, libraries, models etc.|
-| services| (parent folder) contains the service layer, api call, caching|
-| store| (parent folder) contains the app state management,store and configurations|
-| utils| (parent folder) contains the utility functions|
+| services| (parent folder) contains the service layer, api call, caching. |
+| store| (parent folder) contains the app state management, store and configurations.|
+| utils| (parent folder) contains the utility functions used all throughout the app. |
 
 ## Contact
 You may wish to contact me at paolo.nunal24@gmail.com

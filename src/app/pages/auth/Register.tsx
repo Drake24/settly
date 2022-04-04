@@ -4,6 +4,7 @@ import Admin from "../../../lib/models/AdminModel";
 import ErrorData from "../../../lib/enums/ErrorData";
 import formatError from "../../../utils/FormatResponseErrorUtil";
 import ReCAPTCHA from "react-google-recaptcha";
+import { Link } from 'react-router-dom';
 
 interface formRegister {
   firstName: string;
@@ -15,24 +16,32 @@ interface formRegister {
   recaptcha: string | null;
 }
 
+const initialState = {
+  firstName: "",
+  lastName: "",
+  email: "",
+  emailRepeat: "",
+  password: "",
+  passwordRepeat: "",
+  recaptcha: null,
+};
+
 const Register = () => {
   const [addAdmin] = useAddAdminMutation();
   const [responseError, setResponseError] = useState<ErrorData | null>();
-  const [admin, setAdmin] = useState<formRegister>({
-    firstName: "",
-    lastName: "",
-    email: "",
-    emailRepeat: "",
-    password: "",
-    passwordRepeat: "",
-    recaptcha: "",
-  });
+  const [success, setSuccess] = useState<boolean>();
+  const [admin, setAdmin] = useState<formRegister>(initialState);
 
   const onCreate = async () => {
-    const result = await addAdmin(admin)
+    await addAdmin(admin)
       .unwrap()
-      .then((user: Admin) => {})
+      .then((user: Admin) => {
+        setSuccess(true);
+        setResponseError(null);
+        setAdmin({ ...initialState });
+      })
       .catch((error: ErrorData) => {
+        setSuccess(false);
         setResponseError(formatError(error));
       });
   };
@@ -51,6 +60,17 @@ const Register = () => {
     });
   };
 
+  const errors = () => {
+    const test: any = [];
+    Object.entries(responseError?.errors?.data).forEach(([key, value]) =>
+      test.push(value)
+    );
+
+    test.forEach((error: Array<string>) => {
+      return error[0];
+    });
+  };
+
   return (
     <div className="container">
       <div className="row justify-content-center align-items-center py-5">
@@ -59,6 +79,7 @@ const Register = () => {
             <div className="card-body">
               <div className="card-title text-center p-3">
                 <h5>Create your account</h5>
+                {success ? "Successfully created account" : ""}
                 {responseError?.errors
                   ? responseError?.errors?.message
                   : responseError?.message}
@@ -71,6 +92,7 @@ const Register = () => {
                     name="firstName"
                     placeholder="First name"
                     onChange={onHandleChange}
+                    value={admin.firstName}
                   />
                   <label>First name</label>
                 </div>
@@ -81,6 +103,7 @@ const Register = () => {
                     name="lastName"
                     placeholder="Surname"
                     onChange={onHandleChange}
+                    value={admin.lastName}
                   />
                   <label>Surname</label>
                 </div>
@@ -91,6 +114,7 @@ const Register = () => {
                     name="email"
                     placeholder="name@example.com"
                     onChange={onHandleChange}
+                    value={admin.email}
                   />
                   <label>Email address</label>
                 </div>
@@ -101,6 +125,7 @@ const Register = () => {
                     name="emailRepeat"
                     placeholder="name@example.com"
                     onChange={onHandleChange}
+                    value={admin.emailRepeat}
                   />
                   <label>Confirm email address</label>
                 </div>
@@ -111,6 +136,7 @@ const Register = () => {
                     placeholder="Password"
                     name="password"
                     onChange={onHandleChange}
+                    value={admin.password}
                   />
                   <label>Password</label>
                 </div>
@@ -121,6 +147,7 @@ const Register = () => {
                     placeholder="name@example.com"
                     name="passwordRepeat"
                     onChange={onHandleChange}
+                    value={admin.passwordRepeat}
                   />
                   <label>Repeat your password</label>
                 </div>
@@ -138,6 +165,12 @@ const Register = () => {
                   >
                     Create Account
                   </button>
+                </div>
+                <div className="pt-2">
+                  Back to &nbsp;
+                  <Link className="link-create" to="/auth/login">
+                    login.
+                  </Link>
                 </div>
               </div>
             </div>

@@ -80,10 +80,10 @@ const Login = () => {
                   Login
                 </button>
               </div>
-              <span>
+              <div className="pt-2">
                 No account yet? &nbsp;
                 <Link className="link-create" to="/auth/register">Create one here.</Link>
-              </span>
+              </div>
             </div>
           </div>
         </div>

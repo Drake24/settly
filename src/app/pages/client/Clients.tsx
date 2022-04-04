@@ -11,29 +11,33 @@ import Navbar from "../Navbar";
 import ErrorData from "../../../lib/enums/ErrorData";
 import formatError from "../../../utils/FormatResponseErrorUtil";
 
+interface formCreate {
+  firstName: string;
+  lastName: string;
+  email: string;
+  file: File | null;
+}
+
+const initialState = {
+  firstName: "",
+  lastName: "",
+  email: "",
+  file: null,
+};
+
 const Clients = () => {
   const { data: clients, error, isLoading } = useGetClientsQuery();
 
   const [responseError, setResponseError] = useState<ErrorData | null>();
-  const [responseErrorEdit, setResponseErrorEdit] = useState<ErrorData | null>();
+  const [responseErrorEdit, setResponseErrorEdit] =
+    useState<ErrorData | null>();
   const [addClient] = useAddClientMutation();
   const [deleteClient] = useDeleteClientMutation();
   const [updateClient] = useUpdateClientMutation();
   const [show, setShow] = useState(false);
 
-  const [client, setClient] = useState<Client>({
-    firstName: "",
-    lastName: "",
-    email: "",
-    file: null,
-  });
-
-  const [editClient, setEditClient] = useState<Client>({
-    firstName: "",
-    lastName: "",
-    email: "",
-    file: null,
-  });
+  const [client, setClient] = useState<formCreate>(initialState);
+  const [editClient, setEditClient] = useState<Client>(initialState);
 
   const onHandleChange = (e: React.FormEvent<HTMLInputElement>) => {
     setClient({
@@ -56,9 +60,12 @@ const Clients = () => {
   };
 
   const onCreate = async () => {
-    const result = await addClient(client)
+    await addClient(client)
       .unwrap()
-      .then((client: Client) => {})
+      .then((client: Client) => {
+        setResponseError(null);
+        setClient({ ...initialState });
+      })
       .catch((error: ErrorData) => {
         setResponseError(formatError(error));
       });
@@ -104,6 +111,7 @@ const Clients = () => {
                     className="form-control border-0 border-bottom"
                     placeholder="First Name"
                     onChange={onHandleChange}
+                    value={client.firstName}
                   />
                   <label>First Name</label>
                 </div>
@@ -114,6 +122,7 @@ const Clients = () => {
                     className="form-control border-0 border-bottom"
                     placeholder="Last Name"
                     onChange={onHandleChange}
+                    value={client.lastName}
                   />
                   <label>Last Name</label>
                 </div>
@@ -124,6 +133,7 @@ const Clients = () => {
                     className="form-control border-0 border-bottom"
                     placeholder="username@email.com"
                     onChange={onHandleChange}
+                    value={client.email}
                   />
                   <label>Email address</label>
                 </div>
@@ -251,7 +261,7 @@ const Clients = () => {
               type="button"
               className="btn btn-sm btn-primary m-1"
             >
-              Edit
+              Update
             </button>
             <button
               onClick={closeEditModal}

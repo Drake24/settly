@@ -5,7 +5,8 @@ the Settly-Api.
 
 ## Getting Started with the Settly-Api
 There is a `.env-example` file included to see the configurations for the application.
-Update the `REACT_APP_LOCAL_HOST_API_URL` in the environment file to point where the Settly-Api
+
+Please update the `REACT_APP_LOCAL_HOST_API_URL` in the `.env` file to point where the Settly-Api
 is hosted.
 
 To start with the application run:
@@ -21,9 +22,8 @@ To start with the application run:
 | app/routes|  the routes of the application separated for public and private|
 | lib | (parent folder) contains the common files, libraries, models etc.|
 | services| (parent folder) contains the service layer, api call, caching|
-| state| (parent folder) contains the app state, management and configurations
-| store| (parent folder) contains the app state, management and configurations
-| utils| (parent folder) contains the utility functions
+| store| (parent folder) contains the app state management,store and configurations|
+| utils| (parent folder) contains the utility functions|
 
 ## Contact
 You may wish to contact me at paolo.nunal24@gmail.com

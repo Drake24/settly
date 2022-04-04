@@ -34,7 +34,6 @@ export const clientApi = createApi({
         Object.entries(client).forEach(([key, value]) => {
           formData.append(key, value);
         });
-        console.log(formData);
         return {
           url: `clients`,
           method: "POST",
@@ -63,15 +62,11 @@ export const clientApi = createApi({
     updateClient: builder.mutation<Client, Client>({
       query(client: Client) {
         const { id } = client;
-        console.log(client);
         const formData = new FormData();
-
         Object.entries(client).forEach(([key, value]) => {
-         
           formData.append(key, value);
         });
 
-        console.log(formData);
         return {
           url: `clients/update/${id}`,
           method: "POST",
@@ -84,7 +79,6 @@ export const clientApi = createApi({
       },
       invalidatesTags: ["Clients"],
     }),
-
     // Add more here
   }),
 });

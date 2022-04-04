@@ -22,9 +22,9 @@ const Navbar = () => {
             </Link>
           </li>
           <li className="nav-item active">
-            <a onClick={Logout} className="nav-link">
+            <Link onClick={Logout} className="nav-link" to={''}>
               Logout
-            </a>
+            </Link>
           </li>
         </ul>
       </div>

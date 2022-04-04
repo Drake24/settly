@@ -7,7 +7,7 @@
  export default interface ErrorData {
     errors: {
       code?: number,
-      data?: [],
+      data?: [] | any,
       domain?: string,
       message?: string,
       success?: boolean,

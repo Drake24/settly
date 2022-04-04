@@ -1,46 +1,32 @@
-# Getting Started with Create React App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Settly React (SPA)
+The Settly application in React is an SPA implementation of the task given assignment. This app used
+the Settly-Api.
 
-## Available Scripts
+## Getting Started with the Settly-Api
+There is a `.env-example` file included to see the configurations for the application.
+Update the `REACT_APP_LOCAL_HOST_API_URL` in the environment file to point where the Settly-Api
+is hosted.
 
-In the project directory, you can run:
+To start with the application run:
 
-### `npm start`
+`npm install` 
+`npm run` 
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## Notes
+| File/Folder |  Description|
+|--|--|
+| app/pages| (sub parent folder) contains the pages of the application and partial templates|
+| app/pages/auth | contains the authentication pages and logic of the application |
+| app/routes|  the routes of the application separated for public and private|
+| lib | (parent folder) contains the common files, libraries, models etc.|
+| services| (parent folder) contains the service layer, api call, caching|
+| state| (parent folder) contains the app state, management and configurations
+| store| (parent folder) contains the app state, management and configurations
+| utils| (parent folder) contains the utility functions
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+## Contact
+You may wish to contact me at paolo.nunal24@gmail.com
 
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+## License
+The React framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).

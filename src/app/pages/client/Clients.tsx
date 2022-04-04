@@ -5,13 +5,17 @@ import {
   useGetClientsQuery,
   useUpdateClientMutation,
 } from "../../../services/ClientService";
+import { Modal } from "react-bootstrap";
 import Client from "../../../lib/models/ClientModel";
 import Navbar from "../Navbar";
-import { Modal } from "react-bootstrap";
+import ErrorData from "../../../lib/enums/ErrorData";
+import formatError from "../../../utils/FormatResponseErrorUtil";
 
 const Clients = () => {
   const { data: clients, error, isLoading } = useGetClientsQuery();
 
+  const [responseError, setResponseError] = useState<ErrorData | null>();
+  const [responseErrorEdit, setResponseErrorEdit] = useState<ErrorData | null>();
   const [addClient] = useAddClientMutation();
   const [deleteClient] = useDeleteClientMutation();
   const [updateClient] = useUpdateClientMutation();
@@ -21,16 +25,14 @@ const Clients = () => {
     firstName: "",
     lastName: "",
     email: "",
-    profilePhoto: "",
-    file: "",
+    file: null,
   });
 
   const [editClient, setEditClient] = useState<Client>({
     firstName: "",
     lastName: "",
     email: "",
-    profilePhoto: "",
-    file: "",
+    file: null,
   });
 
   const onHandleChange = (e: React.FormEvent<HTMLInputElement>) => {
@@ -44,7 +46,6 @@ const Clients = () => {
   };
 
   const onHandleEditClient = (e: React.FormEvent<HTMLInputElement>) => {
-
     setEditClient({
       ...editClient,
       [e.currentTarget.name]:
@@ -55,7 +56,12 @@ const Clients = () => {
   };
 
   const onCreate = async () => {
-    const result = await addClient(client).unwrap();
+    const result = await addClient(client)
+      .unwrap()
+      .then((client: Client) => {})
+      .catch((error: ErrorData) => {
+        setResponseError(formatError(error));
+      });
   };
 
   const onDelete = async (client: Client) => {
@@ -63,9 +69,14 @@ const Clients = () => {
   };
 
   const onUpdate = async () => {
-    await updateClient(editClient).unwrap();
+    await updateClient(editClient)
+      .unwrap()
+      .then((client: Client) => {})
+      .catch((error: ErrorData) => {
+        setResponseErrorEdit(formatError(error));
+      });
     setShow(false);
-  }
+  };
 
   const openEditModal = (client: Client) => {
     setEditClient(client);
@@ -83,6 +94,9 @@ const Clients = () => {
             <div className="p-5 mb-4 bg-light rounded-3">
               <div className="container-fluid py-5">
                 <h1 className="display-5 fw-bold">Add Client</h1>
+                {responseError?.errors
+                  ? responseError?.errors?.message
+                  : responseError?.message}
                 <div className="form-floating mb-3">
                   <input
                     name="firstName"
@@ -118,7 +132,6 @@ const Clients = () => {
                     name="file"
                     type="file"
                     className="form-control border-0 border-bottom"
-                    placeholder="name@example.com"
                     onChange={onHandleChange}
                   />
                   <label>Profile Photo</label>
@@ -138,6 +151,9 @@ const Clients = () => {
             <div className="p-5 mb-4 bg-light rounded-3">
               <div className="container-fluid py-5">
                 <h1 className="display-5 fw-bold">List of Clients</h1>
+                {responseErrorEdit?.errors
+                  ? responseErrorEdit?.errors?.message
+                  : responseErrorEdit?.message}
                 <table className="table">
                   <thead>
                     <tr>
@@ -219,6 +235,14 @@ const Clients = () => {
                 value={editClient.email}
               />
               <label>Email</label>
+            </div>
+            <div className="form-floating mb-3">
+              <input
+                name="file"
+                type="file"
+                className="form-control border-0 border-bottom"
+                onChange={onHandleEditClient}
+              />
             </div>
           </Modal.Body>
           <Modal.Footer>

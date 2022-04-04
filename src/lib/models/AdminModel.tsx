@@ -1,3 +1,6 @@
+/**
+ * Admnin model
+ */
 export default interface AdminModel {
     id?: number
     firstName: string

@@ -31,12 +31,9 @@ const Register = () => {
   const onCreate = async () => {
     const result = await addAdmin(admin)
       .unwrap()
-      .then((user: Admin) => {
-        console.log(user);
-      })
+      .then((user: Admin) => {})
       .catch((error: ErrorData) => {
         setResponseError(formatError(error));
-        console.log(responseError);
       });
   };
 
@@ -62,15 +59,9 @@ const Register = () => {
             <div className="card-body">
               <div className="card-title text-center p-3">
                 <h5>Create your account</h5>
-                {responseError?.errors ? (
-                  <div className="alert alert-danger" role="alert">
-                    {responseError?.errors.message}
-                  </div>
-                ) : (
-                  <div className="alert alert-danger" role="alert">
-                    {responseError?.message}
-                  </div>
-                )}
+                {responseError?.errors
+                  ? responseError?.errors?.message
+                  : responseError?.message}
               </div>
               <div className="p-3">
                 <div className="form-floating mb-3">

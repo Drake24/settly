@@ -11,6 +11,7 @@ export const adminApi = createApi({
   }),
   tagTypes: ["Admins"],
   endpoints: (builder) => ({
+
     addAdmin: builder.mutation<Admin, Admin | any>({
       query(admin: Admin) {
         return {
@@ -24,6 +25,4 @@ export const adminApi = createApi({
   }),
 });
 
-// Export hooks for usage in functional components, which are
-// auto-generated based on the defined endpoints
 export const { useAddAdminMutation } = adminApi;

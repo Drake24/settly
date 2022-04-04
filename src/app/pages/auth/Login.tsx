@@ -27,7 +27,6 @@ const Login = () => {
         dispatch(saveUserCredentials(user));
       })
       .catch((error: ErrorData) => {
-        console.log(error);
         setResponseError(formatError(error));
       });
   };

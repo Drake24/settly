@@ -12,6 +12,7 @@ export const authenticationApi = createApi({
   }),
   tagTypes: ['Authentication'],
   endpoints: (builder) => ({
+
     authenticate: builder.mutation<Admin, { email: string, password: string}>({
       query(user: Admin) {
         return {
@@ -26,6 +27,4 @@ export const authenticationApi = createApi({
   }),
 })
 
-// Export hooks for usage in functional components, which are
-// auto-generated based on the defined endpoints
 export const {useAuthenticateMutation} = authenticationApi

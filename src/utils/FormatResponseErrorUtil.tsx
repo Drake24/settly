@@ -24,6 +24,8 @@ export default function formatError<
     success: false,
   }
 
+  // For failed connections to API. format error message
+  // generated for well defined messages.
   if (instanceOfFetchBaseQuerryError(errorData)) {
     const {status} = Object(errorData)
     formattedError.errors.message = FETCH_BASE_QUERY_ERROR_UNKNOWN_ERROR
@@ -32,6 +34,7 @@ export default function formatError<
     }
   }
 
+  // For handling failed messages from the API
   if (instanceOfResponseError(errorData)) {
     const {data} = Object(errorData)
     formattedError = data
@@ -40,7 +43,6 @@ export default function formatError<
   return formattedError
 }
 
-// https://www.geeksforgeeks.org/how-to-check-interface-type-in-typescript/
 export function instanceOfResponseError(error: any): error is ErrorData {
   return 'data' in error
 }

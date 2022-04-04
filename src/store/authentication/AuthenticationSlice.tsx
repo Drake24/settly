@@ -1,6 +1,6 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit'
-import Admin from '../../lib/models/AdminModel'
 import {RootState} from '../store'
+import Admin from '../../lib/models/AdminModel'
 
 // const initialUserState: User = {
 // } as User
@@ -14,10 +14,6 @@ export const authenticationSlice = createSlice({
     isAuthorized: false,
   },
   reducers: {
-    // Redux Toolkit allows us to write "mutating" logic in reducers. It
-    // doesn't actually mutate the state because it uses the immer library,
-    // which detects changes to a "draft state" and produces a brand new
-    // immutable state based off those changes
     logoutUser: (state: RootState) => {
       state.user = {} as Admin
       state.isAuthorized = false
@@ -36,6 +32,5 @@ export const selectUser = (state: RootState): Admin => state.authentication.user
 export const selectIsAuthorized = (state: RootState): boolean => state.authentication.isAuthorized
 
 export const selectAccessToken = (state: RootState): string => state.authentication.user.accessToken
-
 
 export default authenticationSlice.reducer

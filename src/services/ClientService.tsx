@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import Client from "../lib/models/ClientModel";
 import { RootState } from "../store/store";
+import Client from "../lib/models/ClientModel";
 
 export const clientApi = createApi({
   reducerPath: "clientApi",
@@ -29,13 +29,20 @@ export const clientApi = createApi({
 
     addClient: builder.mutation<Client, Client>({
       query(client: Client) {
-        const { file } = client;
         const formData = new FormData();
-        formData.append("file", file as string);
+
+        Object.entries(client).forEach(([key, value]) => {
+          formData.append(key, value);
+        });
+        console.log(formData);
         return {
           url: `clients`,
           method: "POST",
-          body: client,
+          headers: {
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Headers": "Accept, Content-type",
+          },
+          body: formData,
         };
       },
       // Invalidates the Clients tag
@@ -56,10 +63,23 @@ export const clientApi = createApi({
     updateClient: builder.mutation<Client, Client>({
       query(client: Client) {
         const { id } = client;
+        console.log(client);
+        const formData = new FormData();
+
+        Object.entries(client).forEach(([key, value]) => {
+         
+          formData.append(key, value);
+        });
+
+        console.log(formData);
         return {
-          url: `clients/${id}`,
-          method: "PATCH",
-          body: client,
+          url: `clients/update/${id}`,
+          method: "POST",
+          headers: {
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Headers": "Accept, Content-type",
+          },
+          body: formData,
         };
       },
       invalidatesTags: ["Clients"],
@@ -67,17 +87,8 @@ export const clientApi = createApi({
 
     // Add more here
   }),
-
-  // endpoints: (builder) => ({
-  //   getUser: builder.query<ResponseWithLink<User>, null>({
-  //     query: () => {
-  //       return endpoint('GET /user');
-  //     },
-  // }),
 });
 
-// Export hooks for usage in functional components, which are
-// auto-generated based on the defined endpoints
 export const {
   useGetClientsQuery,
   useAddClientMutation,

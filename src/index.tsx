@@ -3,12 +3,13 @@ import ReactDOM from "react-dom";
 import App from "./app/App";
 import { store } from "./store/store";
 import reportWebVitals from "./reportWebVitals";
-import "bootstrap/dist/css/bootstrap.min.css";
-import "./index.css";
 import { BrowserRouter } from "react-router-dom";
 import { PersistGate } from "redux-persist/integration/react";
 import { persistStore } from "redux-persist";
 import { Provider } from 'react-redux';
+
+import "bootstrap/dist/css/bootstrap.min.css";
+import "./index.css";
 
 let persistor = persistStore(store);
 
